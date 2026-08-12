@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+             x:Class="XavMiraExam.Desktop.Views.StudentLoginView"
+             x:DataType="vm:StudentLoginViewModel">
+    <!-- TODO (Fase 2): introduzir credencial, identificar aluno, iniciar prova. -->
+    <TextBlock Text="Login do Aluno — a implementar na Fase 2." Margin="16" />
+</UserControl>

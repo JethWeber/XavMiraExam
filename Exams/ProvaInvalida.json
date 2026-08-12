@@ -1,0 +1,24 @@
+{
+  "titulo": "",
+  "tempoPorQuestao": 0,
+  "notaMaxima": 20,
+  "questoes": [
+    {
+      "id": 1,
+      "pergunta": "",
+      "alternativas": [
+        "Só uma alternativa"
+      ],
+      "correta": 5
+    },
+    {
+      "id": 1,
+      "pergunta": "Questão com id duplicado",
+      "alternativas": [
+        "A",
+        "B"
+      ],
+      "correta": 0
+    }
+  ]
+}

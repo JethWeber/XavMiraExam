@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AssemblyName>XavMiraExam</AssemblyName>
+    <RootNamespace>XavMiraExam.Desktop</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <!--
+    IMPORTANTE:
+    Estes pacotes vêm do nuget.org e não puderam ser restaurados no ambiente
+    onde este projeto foi gerado (sem acesso a nuget.org). Ao abrir a solução
+    numa máquina com internet normal, corra "dotnet restore" — o Visual
+    Studio / Rider / VS Code fazem isto automaticamente ao abrir o projeto.
+    As versões abaixo são a série estável 11.2.x do Avalonia, compatível
+    com .NET 10. Ajuste para a versão mais recente se preferir.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.1" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XavMiraExam.Core\XavMiraExam.Core.csproj" />
+    <ProjectReference Include="..\XavMiraExam.Infrastructure\XavMiraExam.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

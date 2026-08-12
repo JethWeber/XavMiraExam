@@ -1,0 +1,11 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="XavMiraExam.Desktop.App"
+             RequestedThemeVariant="Default">
+    <!-- "Default" ThemeVariant segue o tema do sistema operativo.
+         Pode ser "Dark" ou "Light" se quiser forçar um tema específico. -->
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>

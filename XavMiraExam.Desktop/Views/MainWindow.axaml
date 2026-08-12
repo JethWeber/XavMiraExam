@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+        x:Class="XavMiraExam.Desktop.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="XavMira Exam System — Fase 1"
+        Width="640" Height="420"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
+
+        <StackPanel Grid.Row="0" Spacing="4">
+            <TextBlock Text="XavMira Exam System"
+                       FontSize="26" FontWeight="Bold" />
+            <TextBlock Text="Fase 1 — Fundação: solução, Avalonia, modelos, leitura e validação de JSON"
+                       FontSize="13" Opacity="0.7" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Margin="0,20,0,0" Padding="16"
+                Background="#EAF0FA" CornerRadius="6">
+            <StackPanel Spacing="8">
+                <TextBlock Text="Esta janela confirma que a interface Avalonia está corretamente"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="ligada ao XavMiraExam.Core e ao XavMiraExam.Infrastructure."
+                           TextWrapping="Wrap" />
+                <Button Content="Verificar Fase 1 (carregar prova de exemplo)"
+                        Command="{Binding VerificarFase1Command}"
+                        HorizontalAlignment="Left"
+                        Margin="0,8,0,0" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Margin="0,16,0,0" Padding="16"
+                BorderBrush="#C9D3E0" BorderThickness="1" CornerRadius="6">
+            <TextBlock Text="{Binding StatusMessage}"
+                       TextWrapping="Wrap" VerticalAlignment="Top" />
+        </Border>
+
+        <TextBlock Grid.Row="3" Margin="0,16,0,0"
+                   Text="As telas de Professor, Login do Aluno, Prova e Resultado serão implementadas nas próximas fases."
+                   FontStyle="Italic" Opacity="0.6" TextWrapping="Wrap" />
+    </Grid>
+</Window>

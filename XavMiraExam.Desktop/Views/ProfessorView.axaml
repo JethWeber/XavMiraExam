@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+             x:Class="XavMiraExam.Desktop.Views.ProfessorView"
+             x:DataType="vm:ProfessorViewModel">
+    <!-- TODO (Fase 2): importar JSON, validar prova, configurar tempo por questão, iniciar sessão. -->
+    <TextBlock Text="Modo Professor — a implementar na Fase 2." Margin="16" />
+</UserControl>

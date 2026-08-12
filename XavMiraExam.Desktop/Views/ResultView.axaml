@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+             x:Class="XavMiraExam.Desktop.Views.ResultView"
+             x:DataType="vm:ResultViewModel">
+    <!-- TODO (Fase 4): nota final, percentagem, questões erradas, exportar PDF. -->
+    <TextBlock Text="Tela de Resultado — a implementar na Fase 4." Margin="16" />
+</UserControl>

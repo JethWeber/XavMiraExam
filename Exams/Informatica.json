@@ -1,0 +1,62 @@
+{
+  "titulo": "Avaliação de Informática",
+  "tempoPorQuestao": 10,
+  "notaMaxima": 20,
+  "questoes": [
+    {
+      "id": 1,
+      "pergunta": "O que significa CPU?",
+      "alternativas": [
+        "Central Processing Unit",
+        "Computer Personal Unit",
+        "Central Program Utility",
+        "Computer Processing Unit"
+      ],
+      "correta": 0
+    },
+    {
+      "id": 2,
+      "pergunta": "Qual destes é um sistema operativo?",
+      "alternativas": [
+        "Microsoft Word",
+        "Windows",
+        "Google Chrome",
+        "MySQL"
+      ],
+      "correta": 1
+    },
+    {
+      "id": 3,
+      "pergunta": "Qual destas unidades mede a capacidade de armazenamento?",
+      "alternativas": [
+        "Hertz",
+        "Watt",
+        "Byte",
+        "Volt"
+      ],
+      "correta": 2
+    },
+    {
+      "id": 4,
+      "pergunta": "Qual destas linguagens é usada para desenvolver aplicações .NET?",
+      "alternativas": [
+        "HTML",
+        "C#",
+        "CSS",
+        "SQL"
+      ],
+      "correta": 1
+    },
+    {
+      "id": 5,
+      "pergunta": "O que é a RAM?",
+      "alternativas": [
+        "Memória de armazenamento permanente",
+        "Um tipo de processador",
+        "Memória de acesso aleatório e volátil",
+        "Um sistema operativo"
+      ],
+      "correta": 2
+    }
+  ]
+}
