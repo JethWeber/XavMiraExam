@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using XavMiraExam.Desktop.ViewModels;
+using XavMiraExam.Desktop.Services;
 using XavMiraExam.Desktop.Views;
 
 namespace XavMiraExam.Desktop;
@@ -17,10 +17,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainViewModel(),
-            };
+            var filePicker = new FilePickerService();
+            var mainWindow = new MainWindow();
+            mainWindow.InitializeServices(filePicker);
+            desktop.MainWindow = mainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
