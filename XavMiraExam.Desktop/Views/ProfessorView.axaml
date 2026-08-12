@@ -3,6 +3,74 @@
              xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
              x:Class="XavMiraExam.Desktop.Views.ProfessorView"
              x:DataType="vm:ProfessorViewModel">
-    <!-- TODO (Fase 2): importar JSON, validar prova, configurar tempo por questão, iniciar sessão. -->
-    <TextBlock Text="Modo Professor — a implementar na Fase 2." Margin="16" />
+
+    <ScrollViewer>
+        <Grid Margin="32" RowDefinitions="Auto,Auto,Auto,*,Auto">
+            <StackPanel Grid.Row="0" Spacing="4">
+                <TextBlock Text="Modo Professor"
+                           FontSize="24" FontWeight="Bold" />
+                <TextBlock Text="Importar prova, validar e iniciar sessão"
+                           Opacity="0.7" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,20,0,0" Spacing="12">
+                <Button Content="Importar ficheiro JSON"
+                        Command="{Binding ImportExamCommand}"
+                        HorizontalAlignment="Left" />
+
+                <Border IsVisible="{Binding IsExamLoaded}"
+                        Padding="16"
+                        Background="#EAF0FA"
+                        CornerRadius="6">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="{Binding ExamTitle}" FontWeight="SemiBold" FontSize="16" />
+                        <TextBlock Text="{Binding QuestionCount, StringFormat='Questões: {0}'}" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="Tempo por questão (s):" VerticalAlignment="Center" />
+                            <NumericUpDown Value="{Binding TempoPorQuestao}"
+                                           Minimum="1"
+                                           Maximum="3600"
+                                           Width="100" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding NotaMaxima, StringFormat='Nota máxima: {0}'}" />
+                    </StackPanel>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding ValidationErrors}"
+                              IsVisible="{Binding HasValidationErrors}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringFormat='• {0}'}"
+                                       Foreground="#B00020"
+                                       TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <Border Grid.Row="2"
+                    Margin="0,16,0,0"
+                    Padding="16"
+                    BorderBrush="#C9D3E0"
+                    BorderThickness="1"
+                    CornerRadius="6">
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap" />
+            </Border>
+
+            <StackPanel Grid.Row="4"
+                        Margin="0,20,0,0"
+                        Orientation="Horizontal"
+                        Spacing="12">
+                <Button Content="Iniciar sessão"
+                        Command="{Binding StartSessionCommand}"
+                        IsEnabled="{Binding IsExamLoaded}" />
+                <Button Content="Modo Aluno"
+                        Command="{Binding OpenStudentLoginCommand}"
+                        IsEnabled="{Binding IsSessionStarted}" />
+                <Button Content="Voltar"
+                        Command="{Binding GoBackCommand}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
