@@ -1,67 +1,58 @@
-using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using XavMiraExam.Core.Interfaces;
 using XavMiraExam.Core.Services;
-using XavMiraExam.Infrastructure.Json;
+using XavMiraExam.Desktop.Services;
 
 namespace XavMiraExam.Desktop.ViewModels;
 
-/// <summary>
-/// ViewModel da janela principal. Nesta Fase 1, serve apenas para confirmar
-/// visualmente que a aplicação Avalonia está corretamente ligada ao Core e à
-/// Infrastructure (carregamento + validação de provas). As telas reais de
-/// Professor / Aluno / Prova / Resultado serão construídas na Fase 2 em diante.
-/// </summary>
-public partial class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject, INavigationHost
 {
     private readonly ExamService _examService;
+    private readonly IStudentService _studentService;
+    private readonly ExamSessionService _sessionService;
+    private readonly IFilePickerService _filePicker;
 
     [ObservableProperty]
-    private string _statusMessage = "Pronto para verificar o carregamento de uma prova.";
+    private ObservableObject? _currentViewModel;
 
-    [ObservableProperty]
-    private bool _ultimaVerificacaoComSucesso;
-
-    public MainViewModel()
+    public MainViewModel(
+        ExamService examService,
+        IStudentService studentService,
+        ExamSessionService sessionService,
+        IFilePickerService filePicker)
     {
-        IExamJsonReader reader = new ExamJsonReader();
-        IExamValidator validator = new ExamValidator();
-        _examService = new ExamService(reader, validator);
+        _examService = examService;
+        _studentService = studentService;
+        _sessionService = sessionService;
+        _filePicker = filePicker;
+        NavigateToHome();
     }
 
-    [RelayCommand]
-    private void VerificarFase1()
+    public void NavigateToHome() =>
+        CurrentViewModel = new HomeViewModel(this);
+
+    public void NavigateToProfessor() =>
+        CurrentViewModel = new ProfessorViewModel(this, _examService, _sessionService, _filePicker);
+
+    public void NavigateToStudentLogin()
     {
-        try
+        if (!_sessionService.IsSessionReady)
         {
-            string examsDir = EncontrarPastaExams();
-            string caminho = Path.Combine(examsDir, "Informatica.json");
-
-            var exam = _examService.LoadAndValidate(caminho);
-
-            StatusMessage =
-                $"Prova \"{exam.Titulo}\" carregada e validada com sucesso.\n" +
-                $"{exam.Questoes.Count} questão(ões) — {exam.TempoPorQuestao}s por questão — nota máxima {exam.NotaMaxima}.";
-            UltimaVerificacaoComSucesso = true;
+            CurrentViewModel = new StudentLoginViewModel(
+                this,
+                _studentService,
+                _sessionService,
+                "Nenhuma sessão de prova está ativa. Peça ao professor para importar e iniciar a prova.");
+            return;
         }
-        catch (Exception ex)
-        {
-            StatusMessage = "Falha ao carregar a prova: " + ex.Message;
-            UltimaVerificacaoComSucesso = false;
-        }
+
+        CurrentViewModel = new StudentLoginViewModel(this, _studentService, _sessionService);
     }
 
-    private static string EncontrarPastaExams()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir is not null)
-        {
-            string candidate = Path.Combine(dir.FullName, "Exams");
-            if (Directory.Exists(candidate))
-                return candidate;
-            dir = dir.Parent;
-        }
-        throw new DirectoryNotFoundException("Pasta 'Exams' não encontrada.");
-    }
+    public void NavigateToExam() =>
+        CurrentViewModel = new ExamViewModel(this, _sessionService);
+
+    public void NavigateToExamComplete() =>
+        CurrentViewModel = new ExamCompleteViewModel(this, _sessionService);
 }
