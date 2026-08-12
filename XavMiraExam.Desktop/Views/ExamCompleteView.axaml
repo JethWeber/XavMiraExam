@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+             x:Class="XavMiraExam.Desktop.Views.ExamCompleteView"
+             x:DataType="vm:ExamCompleteViewModel">
+
+    <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
+        <StackPanel Grid.Row="0" Spacing="4">
+            <TextBlock Text="Prova concluída"
+                       FontSize="26" FontWeight="Bold"
+                       Foreground="#2E7D32" />
+            <TextBlock Text="As respostas foram registadas com sucesso."
+                       Opacity="0.7" />
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Margin="0,24,0,0"
+                Padding="20"
+                Background="#E8F5E9"
+                CornerRadius="8"
+                MaxWidth="480">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{Binding StudentName}" FontSize="18" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding ExamTitle, StringFormat='Prova: {0}'}" />
+                <Separator Margin="0,8" />
+                <TextBlock Text="{Binding TotalQuestions, StringFormat='Total de questões: {0}'}" />
+                <TextBlock Text="{Binding Respondidas, StringFormat='Respondidas: {0}'}" />
+                <TextBlock Text="{Binding NaoRespondidas, StringFormat='Não respondidas: {0}'}" />
+            </StackPanel>
+        </Border>
+
+        <TextBlock Grid.Row="2"
+                   Margin="0,20,0,0"
+                   Text="A correção automática e o relatório em PDF serão implementados nas Fases 3 e 4."
+                   Opacity="0.65"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top" />
+
+        <Button Grid.Row="3"
+                Margin="0,24,0,0"
+                Content="Terminar"
+                Command="{Binding FinishCommand}"
+                HorizontalAlignment="Left" />
+    </Grid>
+</UserControl>
