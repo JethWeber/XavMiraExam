@@ -3,6 +3,52 @@
              xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
              x:Class="XavMiraExam.Desktop.Views.StudentLoginView"
              x:DataType="vm:StudentLoginViewModel">
-    <!-- TODO (Fase 2): introduzir credencial, identificar aluno, iniciar prova. -->
-    <TextBlock Text="Login do Aluno — a implementar na Fase 2." Margin="16" />
+
+    <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
+        <StackPanel Grid.Row="0" Spacing="4">
+            <TextBlock Text="Identificação do Aluno"
+                       FontSize="24" FontWeight="Bold" />
+            <TextBlock Text="{Binding ExamTitle, StringFormat='Prova: {0}'}"
+                       Opacity="0.7" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,24,0,0" Spacing="12" MaxWidth="420">
+            <TextBlock Text="Credencial / Código" />
+            <TextBox Text="{Binding Codigo}"
+                     Watermark="Ex: A001"
+                     MaxLength="20" />
+            <Button Content="Identificar"
+                    Command="{Binding IdentifyStudentCommand}"
+                    HorizontalAlignment="Left" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Margin="0,24,0,0" Spacing="12">
+            <Border IsVisible="{Binding IsStudentIdentified}"
+                    Padding="16"
+                    Background="#EAF0FA"
+                    CornerRadius="6"
+                    MaxWidth="420">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Aluno identificado" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding StudentName}" FontSize="18" />
+                    <TextBlock Text="{Binding StudentTurma, StringFormat='Turma: {0}'}" Opacity="0.8" />
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       TextWrapping="Wrap"
+                       Opacity="0.85" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    Spacing="12"
+                    Margin="0,20,0,0">
+            <Button Content="Iniciar prova"
+                    Command="{Binding StartExamCommand}"
+                    IsEnabled="{Binding IsStudentIdentified}" />
+            <Button Content="Voltar"
+                    Command="{Binding GoBackCommand}" />
+        </StackPanel>
+    </Grid>
 </UserControl>
