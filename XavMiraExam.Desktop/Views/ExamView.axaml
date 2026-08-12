@@ -2,7 +2,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
              x:Class="XavMiraExam.Desktop.Views.ExamView"
+             x:Name="Root"
              x:DataType="vm:ExamViewModel">
-    <!-- TODO (Fase 2): questão atual, alternativas, cronómetro, avanço automático. -->
-    <TextBlock Text="Tela da Prova — a implementar na Fase 2." Margin="16" />
+
+    <Grid Margin="32" RowDefinitions="Auto,Auto,Auto,*,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="2">
+                <TextBlock Text="{Binding ExamTitle}" Opacity="0.7" />
+                <TextBlock Text="{Binding StudentName}" FontWeight="SemiBold" />
+            </StackPanel>
+            <Border Grid.Column="1"
+                    Padding="12,6"
+                    Background="#FFF3E0"
+                    CornerRadius="6">
+                <TextBlock Text="{Binding TimerText}"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#E65100" />
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="1"
+                   Margin="0,16,0,0"
+                   Text="{Binding ProgressText}"
+                   FontWeight="SemiBold"
+                   FontSize="16" />
+
+        <TextBlock Grid.Row="2"
+                   Margin="0,20,0,0"
+                   Text="{Binding QuestionText}"
+                   FontSize="18"
+                   TextWrapping="Wrap" />
+
+        <ItemsControl Grid.Row="3"
+                      Margin="0,24,0,0"
+                      ItemsSource="{Binding Alternatives}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:AlternativeViewModel">
+                    <Button Content="{Binding Label}"
+                            Command="{Binding #Root.((vm:ExamViewModel)DataContext).SelectAnswerCommand}"
+                            CommandParameter="{Binding Index}"
+                            IsEnabled="{Binding #Root.((vm:ExamViewModel)DataContext).CanAnswer}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Margin="0,0,0,10"
+                            Padding="16,12"
+                            FontSize="15" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Grid.Row="4"
+                   Margin="0,16,0,0"
+                   Text="Selecione uma alternativa. O tempo esgotado avança automaticamente."
+                   Opacity="0.6"
+                   FontStyle="Italic"
+                   TextWrapping="Wrap" />
+    </Grid>
 </UserControl>
