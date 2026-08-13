@@ -3,12 +3,16 @@ using XavMiraExam.Core.Models;
 namespace XavMiraExam.Core.Interfaces;
 
 /// <summary>
-/// Contrato para identificação de alunos pela credencial/código.
+/// Alunos (SQLite). Login: Sobrenome + Senha.
 /// </summary>
 public interface IStudentService
 {
-    /// <summary>
-    /// Procura um aluno pelo código introduzido. Devolve null se não existir.
-    /// </summary>
-    Student? FindByCodigo(string codigo);
+    /// <summary>Autentica por sobrenome + senha. Null se inválido.</summary>
+    Student? Authenticate(string sobrenome, string senha);
+
+    /// <summary>Cria conta.</summary>
+    Student Register(string nome, string sobrenome, string senha, string? turma = null);
+
+    /// <summary>Lista todos (professor).</summary>
+    IReadOnlyList<Student> GetAll();
 }
