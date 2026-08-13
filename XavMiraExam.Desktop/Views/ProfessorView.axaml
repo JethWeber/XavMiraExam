@@ -10,7 +10,7 @@
                 <TextBlock Text="Modo Professor"
                            FontSize="24" FontWeight="Bold" />
                 <TextBlock Text="Importar prova, validar e iniciar sessão"
-                           Opacity="0.7" />
+                           Foreground="{StaticResource TextSecondaryBrush}" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,20,0,0" Spacing="12">
@@ -20,17 +20,21 @@
 
                 <Border IsVisible="{Binding IsExamLoaded}"
                         Padding="16"
-                        Background="#EAF0FA"
-                        CornerRadius="6">
+                        Background="{StaticResource InfoSurfaceBrush}"
+                        BorderBrush="{StaticResource InfoBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
                     <StackPanel Spacing="6">
-                        <TextBlock Text="{Binding ExamTitle}" FontWeight="SemiBold" FontSize="16" />
+                        <TextBlock Text="{Binding ExamTitle}"
+                                   Foreground="{StaticResource InfoTextBrush}"
+                                   FontWeight="SemiBold" FontSize="16" />
                         <TextBlock Text="{Binding QuestionCount, StringFormat='Questões: {0}'}" />
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <TextBlock Text="Tempo por questão (s):" VerticalAlignment="Center" />
                             <NumericUpDown Value="{Binding TempoPorQuestao}"
                                            Minimum="1"
                                            Maximum="3600"
-                                           Width="100" />
+                                           Width="110" />
                         </StackPanel>
                         <TextBlock Text="{Binding NotaMaxima, StringFormat='Nota máxima: {0}'}" />
                     </StackPanel>
@@ -41,7 +45,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding StringFormat='• {0}'}"
-                                       Foreground="#B00020"
+                                       Foreground="{StaticResource DangerTextBrush}"
                                        TextWrapping="Wrap" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -51,9 +55,10 @@
             <Border Grid.Row="2"
                     Margin="0,16,0,0"
                     Padding="16"
-                    BorderBrush="#C9D3E0"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush1}"
                     BorderThickness="1"
-                    CornerRadius="6">
+                    CornerRadius="8">
                 <TextBlock Text="{Binding StatusMessage}"
                            TextWrapping="Wrap" />
             </Border>
@@ -69,6 +74,7 @@
                         Command="{Binding OpenStudentLoginCommand}"
                         IsEnabled="{Binding IsSessionStarted}" />
                 <Button Content="Voltar"
+                        Classes="secondary"
                         Command="{Binding GoBackCommand}" />
             </StackPanel>
         </Grid>

@@ -12,8 +12,9 @@ public partial class HomeViewModel : ObservableObject
         _navigation = navigation;
     }
 
+    /// <summary>Professor precisa de login antes de aceder ao painel.</summary>
     [RelayCommand]
-    private void OpenProfessorMode() => _navigation.NavigateToProfessor();
+    private void OpenProfessorMode() => _navigation.NavigateToProfessorLogin();
 
     [RelayCommand]
     private void OpenStudentMode() => _navigation.NavigateToStudentLogin();

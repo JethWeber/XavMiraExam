@@ -5,6 +5,7 @@
         x:Class="XavMiraExam.Desktop.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Title="XavMira Exam System"
+        Icon="/Assets/XMES_Logo.ico"
         Width="800" Height="600"
         MinWidth="640" MinHeight="480"
         WindowStartupLocation="CenterScreen">
@@ -13,11 +14,17 @@
         <DataTemplate DataType="vm:HomeViewModel">
             <views:HomeView />
         </DataTemplate>
+        <DataTemplate DataType="vm:ProfessorLoginViewModel">
+            <views:ProfessorLoginView />
+        </DataTemplate>
         <DataTemplate DataType="vm:ProfessorViewModel">
             <views:ProfessorView />
         </DataTemplate>
         <DataTemplate DataType="vm:StudentLoginViewModel">
             <views:StudentLoginView />
+        </DataTemplate>
+        <DataTemplate DataType="vm:StudentRegisterViewModel">
+            <views:StudentRegisterView />
         </DataTemplate>
         <DataTemplate DataType="vm:ExamViewModel">
             <views:ExamView />

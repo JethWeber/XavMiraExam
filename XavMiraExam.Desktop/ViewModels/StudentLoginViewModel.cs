@@ -13,7 +13,10 @@ public partial class StudentLoginViewModel : ObservableObject
     private readonly ExamSessionService _sessionService;
 
     [ObservableProperty]
-    private string _codigo = string.Empty;
+    private string _sobrenome = string.Empty;
+
+    [ObservableProperty]
+    private string _senha = string.Empty;
 
     [ObservableProperty]
     private string _statusMessage;
@@ -43,7 +46,7 @@ public partial class StudentLoginViewModel : ObservableObject
         _sessionService = sessionService;
 
         _statusMessage = initialMessage ??
-                         "Introduza a sua credencial para iniciar a prova.";
+                         "Introduza o sobrenome e a senha. Se ainda não tem conta, crie uma.";
 
         if (_sessionService.CurrentExam is not null)
             ExamTitle = _sessionService.CurrentExam.Titulo;
@@ -55,29 +58,38 @@ public partial class StudentLoginViewModel : ObservableObject
         IsStudentIdentified = false;
         _identifiedStudent = null;
 
-        if (!_sessionService.IsSessionReady)
+        if (string.IsNullOrWhiteSpace(Sobrenome))
         {
-            StatusMessage = "Nenhuma sessão de prova está ativa. Contacte o professor.";
+            StatusMessage = "Introduza o sobrenome.";
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Codigo))
+        if (string.IsNullOrEmpty(Senha))
         {
-            StatusMessage = "Introduza a sua credencial.";
+            StatusMessage = "Introduza a senha.";
             return;
         }
 
-        Student? student = _studentService.FindByCodigo(Codigo);
+        Student? student = _studentService.Authenticate(Sobrenome, Senha);
         if (student is null)
         {
-            StatusMessage = "Credencial não encontrada. Verifique o código e tente novamente.";
+            StatusMessage =
+                "Credenciais inválidas. Verifique o sobrenome e a senha, ou crie uma conta.";
             return;
         }
 
         _identifiedStudent = student;
-        StudentName = student.Nome;
+        StudentName = student.NomeCompleto;
         StudentTurma = student.Turma;
         IsStudentIdentified = true;
+
+        if (!_sessionService.IsSessionReady)
+        {
+            StatusMessage =
+                "Conta identificada. Ainda não há sessão de prova ativa — peça ao professor para iniciar a prova.";
+            return;
+        }
+
         StatusMessage = "Confirme a sua identificação para iniciar a prova.";
     }
 
@@ -86,19 +98,22 @@ public partial class StudentLoginViewModel : ObservableObject
     {
         if (_identifiedStudent is null)
         {
-            StatusMessage = "Identifique-se primeiro com a credencial.";
+            StatusMessage = "Identifique-se primeiro.";
             return;
         }
 
         if (!_sessionService.IsSessionReady)
         {
-            StatusMessage = "A sessão de prova não está disponível.";
+            StatusMessage = "A sessão de prova não está disponível. Contacte o professor.";
             return;
         }
 
         _sessionService.BeginExam(_identifiedStudent);
         _navigation.NavigateToExam();
     }
+
+    [RelayCommand]
+    private void GoToRegister() => _navigation.NavigateToStudentRegister();
 
     [RelayCommand]
     private void GoBack() => _navigation.NavigateToHome();

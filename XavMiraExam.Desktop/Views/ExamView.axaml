@@ -8,23 +8,26 @@
     <Grid Margin="32" RowDefinitions="Auto,Auto,Auto,*,Auto">
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
             <StackPanel Spacing="2">
-                <TextBlock Text="{Binding ExamTitle}" Opacity="0.7" />
+                <TextBlock Text="{Binding ExamTitle}" Foreground="{StaticResource TextSecondaryBrush}" />
                 <TextBlock Text="{Binding StudentName}" FontWeight="SemiBold" />
             </StackPanel>
             <Border Grid.Column="1"
-                    Padding="12,6"
-                    Background="#FFF3E0"
-                    CornerRadius="6">
+                    Padding="14,8"
+                    Background="{StaticResource WarningSurfaceBrush}"
+                    BorderBrush="{StaticResource WarningBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
                 <TextBlock Text="{Binding TimerText}"
                            FontSize="22"
                            FontWeight="Bold"
-                           Foreground="#E65100" />
+                           Foreground="{StaticResource WarningTextBrush}" />
             </Border>
         </Grid>
 
         <TextBlock Grid.Row="1"
                    Margin="0,16,0,0"
                    Text="{Binding ProgressText}"
+                   Foreground="{StaticResource TextSecondaryBrush}"
                    FontWeight="SemiBold"
                    FontSize="16" />
 
@@ -40,11 +43,11 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="vm:AlternativeViewModel">
                     <Button Content="{Binding Label}"
+                            Classes="alternative"
                             Command="{Binding #Root.((vm:ExamViewModel)DataContext).SelectAnswerCommand}"
                             CommandParameter="{Binding Index}"
                             IsEnabled="{Binding #Root.((vm:ExamViewModel)DataContext).CanAnswer}"
                             HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
                             Margin="0,0,0,10"
                             Padding="16,12"
                             FontSize="15" />
@@ -55,7 +58,7 @@
         <TextBlock Grid.Row="4"
                    Margin="0,16,0,0"
                    Text="Selecione uma alternativa. O tempo esgotado avança automaticamente."
-                   Opacity="0.6"
+                   Foreground="{StaticResource TextMutedBrush}"
                    FontStyle="Italic"
                    TextWrapping="Wrap" />
     </Grid>

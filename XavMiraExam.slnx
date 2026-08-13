@@ -2,5 +2,6 @@
   <Project Path="XavMiraExam.Core/XavMiraExam.Core.csproj" />
   <Project Path="XavMiraExam.Desktop/XavMiraExam.Desktop.csproj" />
   <Project Path="XavMiraExam.Fase1Console/XavMiraExam.Fase1Console.csproj" />
+  <Project Path="XavMiraExam.Fase2Console/XavMiraExam.Fase2Console.csproj" />
   <Project Path="XavMiraExam.Infrastructure/XavMiraExam.Infrastructure.csproj" />
 </Solution>

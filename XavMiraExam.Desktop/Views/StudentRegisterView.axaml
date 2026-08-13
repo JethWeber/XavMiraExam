@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XavMiraExam.Desktop.ViewModels"
+             x:Class="XavMiraExam.Desktop.Views.StudentRegisterView"
+             x:DataType="vm:StudentRegisterViewModel">
+
+    <ScrollViewer>
+        <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto" MaxWidth="420">
+            <StackPanel Grid.Row="0" Spacing="4">
+                <TextBlock Text="Criar conta de aluno"
+                           FontSize="24" FontWeight="Bold" />
+                <TextBlock Text="Registe-se uma vez. Depois entre com sobrenome e senha."
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,24,0,0" Spacing="12">
+                <TextBlock Text="Nome" />
+                <TextBox Text="{Binding Nome}" Watermark="Ex: Maria" MaxLength="60" />
+
+                <TextBlock Text="Sobrenome" />
+                <TextBox Text="{Binding Sobrenome}" Watermark="Ex: Silva" MaxLength="60" />
+
+                <TextBlock Text="Senha" />
+                <TextBox Text="{Binding Senha}" PasswordChar="•" Watermark="Mín. 4 caracteres" MaxLength="64" />
+
+                <TextBlock Text="Confirmar senha" />
+                <TextBox Text="{Binding ConfirmarSenha}" PasswordChar="•" Watermark="Repita a senha" MaxLength="64" />
+
+                <TextBlock Text="Turma (opcional)" />
+                <TextBox Text="{Binding Turma}" Watermark="Ex: Turma A" MaxLength="60" />
+
+                <Button Content="Criar conta"
+                        Command="{Binding RegisterCommand}"
+                        HorizontalAlignment="Left" />
+            </StackPanel>
+
+            <Border Grid.Row="2"
+                    Margin="0,20,0,0"
+                    Padding="16"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush1}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource TextSecondaryBrush}" />
+            </Border>
+
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        Spacing="12"
+                        Margin="0,20,0,0">
+                <Button Content="Ir para login"
+                        Command="{Binding GoToLoginCommand}"
+                        IsEnabled="{Binding RegistrationSucceeded}" />
+                <Button Content="Voltar"
+                        Classes="secondary"
+                        Command="{Binding GoBackCommand}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -6,38 +6,55 @@
 
     <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
         <StackPanel Grid.Row="0" Spacing="4">
-            <TextBlock Text="Identificação do Aluno"
+            <TextBlock Text="Login do Aluno"
                        FontSize="24" FontWeight="Bold" />
             <TextBlock Text="{Binding ExamTitle, StringFormat='Prova: {0}'}"
-                       Opacity="0.7" />
+                       Foreground="{StaticResource TextSecondaryBrush}" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="0,24,0,0" Spacing="12" MaxWidth="420">
-            <TextBlock Text="Credencial / Código" />
-            <TextBox Text="{Binding Codigo}"
-                     Watermark="Ex: A001"
-                     MaxLength="20" />
-            <Button Content="Identificar"
-                    Command="{Binding IdentifyStudentCommand}"
-                    HorizontalAlignment="Left" />
+            <TextBlock Text="Sobrenome" />
+            <TextBox Text="{Binding Sobrenome}"
+                     Watermark="Ex: Silva"
+                     MaxLength="60" />
+
+            <TextBlock Text="Senha" />
+            <TextBox Text="{Binding Senha}"
+                     PasswordChar="•"
+                     Watermark="Senha"
+                     MaxLength="64" />
+
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Content="Entrar"
+                        Command="{Binding IdentifyStudentCommand}" />
+                <Button Content="Criar conta"
+                        Classes="secondary"
+                        Command="{Binding GoToRegisterCommand}" />
+            </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Margin="0,24,0,0" Spacing="12">
             <Border IsVisible="{Binding IsStudentIdentified}"
                     Padding="16"
-                    Background="#EAF0FA"
-                    CornerRadius="6"
+                    Background="{StaticResource InfoSurfaceBrush}"
+                    BorderBrush="{StaticResource InfoBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
                     MaxWidth="420">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Aluno identificado" FontWeight="SemiBold" />
+                    <TextBlock Text="Aluno identificado"
+                               Foreground="{StaticResource InfoTextBrush}"
+                               FontWeight="SemiBold" />
                     <TextBlock Text="{Binding StudentName}" FontSize="18" />
-                    <TextBlock Text="{Binding StudentTurma, StringFormat='Turma: {0}'}" Opacity="0.8" />
+                    <TextBlock Text="{Binding StudentTurma, StringFormat='Turma: {0}'}"
+                               Foreground="{StaticResource TextSecondaryBrush}" />
                 </StackPanel>
             </Border>
 
             <TextBlock Text="{Binding StatusMessage}"
                        TextWrapping="Wrap"
-                       Opacity="0.85" />
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       MaxWidth="420" />
         </StackPanel>
 
         <StackPanel Grid.Row="3"
@@ -48,6 +65,7 @@
                     Command="{Binding StartExamCommand}"
                     IsEnabled="{Binding IsStudentIdentified}" />
             <Button Content="Voltar"
+                    Classes="secondary"
                     Command="{Binding GoBackCommand}" />
         </StackPanel>
     </Grid>

@@ -1,89 +1,85 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using XavMiraExam.Core.Interfaces;
 using XavMiraExam.Core.Models;
+using XavMiraExam.Core.Services;
 
 namespace XavMiraExam.Infrastructure.Json;
 
 /// <summary>
-/// Carrega alunos a partir de um ficheiro JSON local (sem base de dados).
+/// Leitura de alunos a partir de JSON (legado / consolas de teste).
+/// Desktop usa StudentSqliteService.
 /// </summary>
 public class StudentJsonReader : IStudentService
 {
-    private readonly Dictionary<string, Student> _studentsByCodigo;
+    private readonly List<Student> _students;
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
 
     public StudentJsonReader(string filePath)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
         if (!File.Exists(filePath))
-            throw new FileNotFoundException($"Ficheiro de alunos não encontrado: {filePath}", filePath);
+            throw new FileNotFoundException("Ficheiro de alunos não encontrado.", filePath);
 
-        _studentsByCodigo = LoadStudents(filePath);
-    }
-
-    public Student? FindByCodigo(string codigo)
-    {
-        if (string.IsNullOrWhiteSpace(codigo))
-            return null;
-
-        string key = codigo.Trim();
-        return _studentsByCodigo.TryGetValue(key, out Student? student) ? student : null;
-    }
-
-    private static Dictionary<string, Student> LoadStudents(string filePath)
-    {
         string json = File.ReadAllText(filePath);
+        var items = JsonSerializer.Deserialize<List<StudentDto>>(json, JsonOptions)
+                    ?? new List<StudentDto>();
 
-        var options = new JsonSerializerOptions
+        _students = new List<Student>();
+        foreach (var s in items)
         {
-            PropertyNameCaseInsensitive = true,
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true,
-        };
-
-        List<StudentDto>? dtos;
-        try
-        {
-            dtos = JsonSerializer.Deserialize<List<StudentDto>>(json, options);
-        }
-        catch (JsonException ex)
-        {
-            throw new InvalidDataException($"O ficheiro JSON de alunos é inválido: {ex.Message}", ex);
-        }
-
-        if (dtos is null || dtos.Count == 0)
-            throw new InvalidDataException("O ficheiro de alunos não contém registos.");
-
-        var result = new Dictionary<string, Student>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var dto in dtos)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Codigo))
+            if (string.IsNullOrWhiteSpace(s.Codigo) && string.IsNullOrWhiteSpace(s.Nome))
                 continue;
 
-            string codigo = dto.Codigo.Trim();
-            result[codigo] = new Student
+            string full = (s.Nome ?? "").Trim();
+            int space = full.IndexOf(' ');
+            string first = space > 0 ? full[..space] : (string.IsNullOrWhiteSpace(full) ? s.Codigo : full);
+            string last = space > 0 ? full[(space + 1)..].Trim() : "Aluno";
+
+            _students.Add(new Student
             {
-                Codigo = codigo,
-                Nome = dto.Nome?.Trim() ?? string.Empty,
-                Turma = dto.Turma?.Trim() ?? string.Empty,
-            };
+                Id = Guid.NewGuid(),
+                Codigo = (s.Codigo ?? "").Trim(),
+                Nome = first,
+                Sobrenome = last,
+                SenhaHash = PasswordHasher.Hash("1234"),
+                Turma = (s.Turma ?? "").Trim(),
+            });
         }
-
-        if (result.Count == 0)
-            throw new InvalidDataException("Nenhum aluno válido foi encontrado no ficheiro.");
-
-        return result;
     }
 
-    private class StudentDto
+    public Student? Authenticate(string sobrenome, string senha)
     {
-        [JsonPropertyName("codigo")]
-        public string? Codigo { get; set; }
+        sobrenome = (sobrenome ?? "").Trim();
+        if (string.IsNullOrWhiteSpace(sobrenome) || string.IsNullOrEmpty(senha))
+            return null;
 
-        [JsonPropertyName("nome")]
-        public string? Nome { get; set; }
+        foreach (var student in _students)
+        {
+            if (!string.Equals(student.Sobrenome, sobrenome, StringComparison.OrdinalIgnoreCase))
+                continue;
+            if (PasswordHasher.Verify(senha, student.SenhaHash))
+                return student;
+        }
 
-        [JsonPropertyName("turma")]
-        public string? Turma { get; set; }
+        return null;
+    }
+
+    public Student Register(string nome, string sobrenome, string senha, string? turma = null)
+    {
+        throw new NotSupportedException(
+            "Registo via JSON não suportado. Use StudentSqliteService na app Desktop.");
+    }
+
+    public IReadOnlyList<Student> GetAll() => _students;
+
+    private sealed class StudentDto
+    {
+        public string Codigo { get; set; } = "";
+        public string Nome { get; set; } = "";
+        public string Turma { get; set; } = "";
     }
 }

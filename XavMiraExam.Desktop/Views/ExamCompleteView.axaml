@@ -4,42 +4,159 @@
              x:Class="XavMiraExam.Desktop.Views.ExamCompleteView"
              x:DataType="vm:ExamCompleteViewModel">
 
-    <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
-        <StackPanel Grid.Row="0" Spacing="4">
-            <TextBlock Text="Prova concluída"
-                       FontSize="26" FontWeight="Bold"
-                       Foreground="#2E7D32" />
-            <TextBlock Text="As respostas foram registadas com sucesso."
-                       Opacity="0.7" />
-        </StackPanel>
-
-        <Border Grid.Row="1"
-                Margin="0,24,0,0"
-                Padding="20"
-                Background="#E8F5E9"
-                CornerRadius="8"
-                MaxWidth="480">
-            <StackPanel Spacing="8">
-                <TextBlock Text="{Binding StudentName}" FontSize="18" FontWeight="SemiBold" />
-                <TextBlock Text="{Binding ExamTitle, StringFormat='Prova: {0}'}" />
-                <Separator Margin="0,8" />
-                <TextBlock Text="{Binding TotalQuestions, StringFormat='Total de questões: {0}'}" />
-                <TextBlock Text="{Binding Respondidas, StringFormat='Respondidas: {0}'}" />
-                <TextBlock Text="{Binding NaoRespondidas, StringFormat='Não respondidas: {0}'}" />
+    <ScrollViewer>
+        <Grid Margin="32" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" MaxWidth="640">
+            <StackPanel Grid.Row="0" Spacing="4">
+                <TextBlock Text="Prova concluída"
+                           FontSize="26" FontWeight="Bold"
+                           Foreground="{StaticResource SuccessTextBrush}" />
+                <TextBlock Text="A prova foi corrigida automaticamente e o relatório foi gerado."
+                           Foreground="{StaticResource TextSecondaryBrush}" />
             </StackPanel>
-        </Border>
 
-        <TextBlock Grid.Row="2"
-                   Margin="0,20,0,0"
-                   Text="A correção automática e o relatório em PDF serão implementados nas Fases 3 e 4."
-                   Opacity="0.65"
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Top" />
+            <Border Grid.Row="1"
+                    Margin="0,20,0,0"
+                    Padding="20"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush1}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding StudentName}" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding StudentCodigo, StringFormat='Código: {0}'}"
+                               Foreground="{StaticResource TextSecondaryBrush}" />
+                    <TextBlock Text="{Binding ExamTitle, StringFormat='Prova: {0}'}"
+                               Foreground="{StaticResource TextSecondaryBrush}" />
+                    <Separator Margin="0,8" />
+                    <TextBlock Text="{Binding TotalQuestions, StringFormat='Total de questões: {0}'}" />
+                    <TextBlock Text="{Binding Respondidas, StringFormat='Respondidas: {0}'}" />
+                    <TextBlock Text="{Binding NaoRespondidas, StringFormat='Não respondidas: {0}'}" />
+                </StackPanel>
+            </Border>
 
-        <Button Grid.Row="3"
-                Margin="0,24,0,0"
-                Content="Terminar"
-                Command="{Binding FinishCommand}"
-                HorizontalAlignment="Left" />
-    </Grid>
+            <!-- Resultado da correção (Fase 3) -->
+            <Grid Grid.Row="2"
+                  Margin="0,16,0,0"
+                  ColumnDefinitions="*,*,*,*">
+                <Border Grid.Column="0"
+                        Margin="0,0,6,0"
+                        Padding="14"
+                        Background="{StaticResource SuccessSurfaceBrush}"
+                        BorderBrush="{StaticResource SuccessBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Acertos" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" />
+                        <TextBlock Text="{Binding Acertos}" Foreground="{StaticResource SuccessTextBrush}"
+                                   FontSize="22" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Margin="6,0,6,0"
+                        Padding="14"
+                        Background="{StaticResource DangerSurfaceBrush}"
+                        BorderBrush="{StaticResource DangerBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Erros" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" />
+                        <TextBlock Text="{Binding Erros}" Foreground="{StaticResource DangerTextBrush}"
+                                   FontSize="22" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2"
+                        Margin="6,0,6,0"
+                        Padding="14"
+                        Background="{StaticResource InfoSurfaceBrush}"
+                        BorderBrush="{StaticResource InfoBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Aproveitamento" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" />
+                        <TextBlock Text="{Binding PercentagemText}" Foreground="{StaticResource InfoTextBrush}"
+                                   FontSize="22" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3"
+                        Margin="6,0,0,0"
+                        Padding="14"
+                        Background="{StaticResource SurfaceAltBrush}"
+                        BorderBrush="{StaticResource AccentBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Nota final" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" />
+                        <TextBlock Text="{Binding NotaText}" Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontSize="22" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Questões erradas -->
+            <StackPanel Grid.Row="3" Margin="0,20,0,0" Spacing="10" IsVisible="{Binding HasRespostasErradas}">
+                <TextBlock Text="Questões erradas" FontSize="16" FontWeight="SemiBold" />
+                <ItemsControl ItemsSource="{Binding RespostasErradas}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:WrongAnswerViewModel">
+                            <Border Margin="0,0,0,10"
+                                    Padding="14"
+                                    Background="{StaticResource SurfaceBrush}"
+                                    BorderBrush="{StaticResource BorderBrush1}"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Header}"
+                                               Foreground="{StaticResource DangerTextBrush}"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Pergunta}" TextWrapping="Wrap" />
+                                    <TextBlock Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap">
+                                        <Run Text="Resposta do aluno: " />
+                                        <Run Text="{Binding RespostaAluno}" Foreground="{StaticResource DangerTextBrush}" />
+                                    </TextBlock>
+                                    <TextBlock Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap">
+                                        <Run Text="Resposta correta: " />
+                                        <Run Text="{Binding RespostaCorreta}" Foreground="{StaticResource SuccessTextBrush}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Fase 4: PDF -->
+            <Border Grid.Row="4"
+                    Margin="0,20,0,0"
+                    Padding="16"
+                    Background="{StaticResource InfoSurfaceBrush}"
+                    BorderBrush="{StaticResource InfoBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Relatório PDF" FontWeight="SemiBold"
+                               Foreground="{StaticResource InfoTextBrush}" />
+                    <TextBlock Text="{Binding PdfStatusMessage}"
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource TextSecondaryBrush}" />
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Button Content="Gerar / regenerar PDF"
+                                Command="{Binding ExportPdfCommand}" />
+                        <Button Content="Abrir pasta do relatório"
+                                Classes="secondary"
+                                Command="{Binding OpenPdfFolderCommand}"
+                                IsEnabled="{Binding PdfGenerated}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Button Grid.Row="5"
+                    Margin="0,16,0,0"
+                    Content="Terminar"
+                    Command="{Binding FinishCommand}"
+                    HorizontalAlignment="Left" />
+        </Grid>
+    </ScrollViewer>
 </UserControl>
