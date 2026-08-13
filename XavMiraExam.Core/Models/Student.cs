@@ -1,19 +1,24 @@
 namespace XavMiraExam.Core.Models;
 
 /// <summary>
-/// Representa um aluno que realiza a prova.
+/// Aluno. Login: Sobrenome + Senha.
 /// </summary>
 public class Student
 {
-    /// <summary>Identificador interno do aluno.</summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    /// <summary>Código/credencial usado pelo aluno para entrar na prova.</summary>
+    /// <summary>Código interno gerado.</summary>
     public string Codigo { get; set; } = string.Empty;
 
-    /// <summary>Nome completo do aluno.</summary>
     public string Nome { get; set; } = string.Empty;
 
-    /// <summary>Turma a que o aluno pertence.</summary>
+    public string Sobrenome { get; set; } = string.Empty;
+
+    /// <summary>Hash da senha (nunca texto claro).</summary>
+    public string SenhaHash { get; set; } = string.Empty;
+
     public string Turma { get; set; } = string.Empty;
+
+    public string NomeCompleto =>
+        string.IsNullOrWhiteSpace(Sobrenome) ? Nome : $"{Nome} {Sobrenome}".Trim();
 }
