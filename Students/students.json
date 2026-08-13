@@ -1,7 +1,12 @@
 [
-  { "codigo": "A001", "nome": "Joaquim Santareno", "turma": "Informática 2026" },
-  { "codigo": "A002", "nome": "Maria Silva", "turma": "Informática 2026" },
-  { "codigo": "A003", "nome": "Carlos José", "turma": "Informática 2026" },
-  { "codigo": "A004", "nome": "Ana Ferreira", "turma": "Informática 2026" },
-  { "codigo": "A005", "nome": "Pedro Costa", "turma": "Informática 2026" }
+  { "codigo": "A001", "nome": "Joaquim Santareno", "turma": "Turma A" },
+  { "codigo": "A002", "nome": "Maria Silva", "turma": "Turma A" },
+  { "codigo": "A003", "nome": "Carlos José", "turma": "Turma A" },
+  { "codigo": "A004", "nome": "Ana Beatriz Fonseca", "turma": "Turma A" },
+  { "codigo": "A005", "nome": "Pedro Miguel Costa", "turma": "Turma A" },
+  { "codigo": "A006", "nome": "Isabel Ramos", "turma": "Turma A" },
+  { "codigo": "A007", "nome": "Rui Fernando Almeida", "turma": "Turma A" },
+  { "codigo": "A008", "nome": "Sofia Mendes", "turma": "Turma A" },
+  { "codigo": "A009", "nome": "Tiago Neves", "turma": "Turma A" },
+  { "codigo": "A010", "nome": "Beatriz Lopes", "turma": "Turma A" }
 ]
