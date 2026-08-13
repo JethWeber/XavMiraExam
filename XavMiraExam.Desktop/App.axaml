@@ -1,11 +1,150 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="XavMiraExam.Desktop.App"
-             RequestedThemeVariant="Default">
-    <!-- "Default" ThemeVariant segue o tema do sistema operativo.
-         Pode ser "Dark" ou "Light" se quiser forçar um tema específico. -->
+             RequestedThemeVariant="Dark">
+    <!-- Tema fixo "Dark" com paleta própria (slate + indigo), para garantir
+         sempre bom contraste independentemente do tema do sistema operativo. -->
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Fundos -->
+            <SolidColorBrush x:Key="BgBrush" Color="#0F172A" />
+            <SolidColorBrush x:Key="SurfaceBrush" Color="#1B2536" />
+            <SolidColorBrush x:Key="SurfaceAltBrush" Color="#26334A" />
+            <SolidColorBrush x:Key="BorderBrush1" Color="#334155" />
+
+            <!-- Texto -->
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F1F5F9" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#97A6BC" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="#64748B" />
+
+            <!-- Acento principal (indigo) -->
+            <SolidColorBrush x:Key="AccentBrush" Color="#6366F1" />
+            <SolidColorBrush x:Key="AccentHoverBrush" Color="#818CF8" />
+            <SolidColorBrush x:Key="AccentPressedBrush" Color="#4F46E5" />
+            <SolidColorBrush x:Key="AccentTextBrush" Color="#FFFFFF" />
+
+            <!-- Sucesso (verde) -->
+            <SolidColorBrush x:Key="SuccessBrush" Color="#22C55E" />
+            <SolidColorBrush x:Key="SuccessSurfaceBrush" Color="#11301F" />
+            <SolidColorBrush x:Key="SuccessTextBrush" Color="#86EFAC" />
+
+            <!-- Perigo / erro (vermelho) -->
+            <SolidColorBrush x:Key="DangerBrush" Color="#F87171" />
+            <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#3A1414" />
+            <SolidColorBrush x:Key="DangerTextBrush" Color="#FCA5A5" />
+
+            <!-- Aviso / cronómetro (âmbar) -->
+            <SolidColorBrush x:Key="WarningBrush" Color="#F59E0B" />
+            <SolidColorBrush x:Key="WarningSurfaceBrush" Color="#3A2708" />
+            <SolidColorBrush x:Key="WarningTextBrush" Color="#FCD34D" />
+
+            <!-- Informação (teal) -->
+            <SolidColorBrush x:Key="InfoBrush" Color="#2DD4BF" />
+            <SolidColorBrush x:Key="InfoSurfaceBrush" Color="#0F3B3D" />
+            <SolidColorBrush x:Key="InfoTextBrush" Color="#5EEAD4" />
+
+        </ResourceDictionary>
+    </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />
+
+        <!-- Fundos base -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{StaticResource BgBrush}" />
+        </Style>
+        <Style Selector="UserControl">
+            <Setter Property="Background" Value="{StaticResource BgBrush}" />
+        </Style>
+
+        <!-- Texto -->
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        </Style>
+
+        <!-- Botões: acento indigo por omissão -->
+        <Style Selector="Button">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}" />
+            <Setter Property="Padding" Value="18,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="{StaticResource AccentHoverBrush}" />
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="Background" Value="{StaticResource AccentPressedBrush}" />
+        </Style>
+        <Style Selector="Button:disabled">
+            <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+        </Style>
+
+        <!-- Botão secundário (ex: "Voltar") -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush1}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        </Style>
+        <Style Selector="Button.secondary:pointerover">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        </Style>
+        <Style Selector="Button.secondary:pressed">
+            <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}" />
+        </Style>
+
+        <!-- Botões de alternativa (ExamView) -->
+        <Style Selector="Button.alternative">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush1}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+        <Style Selector="Button.alternative:pointerover">
+            <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+        </Style>
+        <Style Selector="Button.alternative:pressed">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource AccentTextBrush}" />
+        </Style>
+        <Style Selector="Button.alternative:disabled">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush1}" />
+        </Style>
+
+        <!-- Campos de texto -->
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush1}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="CaretBrush" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="SelectionBrush" Value="{StaticResource AccentBrush}" />
+        </Style>
+        <!-- NumericUpDown -->
+        <Style Selector="NumericUpDown">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush1}" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+
+        <!-- Separadores -->
+        <Style Selector="Separator">
+            <Setter Property="Background" Value="{StaticResource BorderBrush1}" />
+        </Style>
+
     </Application.Styles>
 </Application>
