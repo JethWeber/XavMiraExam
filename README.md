@@ -1,108 +1,140 @@
 # XavMira Exam System
 
-> **Sistema desktop offline para realização de provas informatizadas no Centro de Formação XavMira.**
+> **Sistema desktop offline para realização, correção e gestão de provas informatizadas.**
 
-O **XavMira Exam System** é uma aplicação desktop desenvolvida para permitir a realização de avaliações informatizadas em ambientes onde a disponibilidade de Internet não pode ser assumida como requisito.
+O **XavMira Exam System** é uma aplicação desktop desenvolvida para o **Centro de Formação XavMira**, concebida para informatizar o processo de realização de avaliações presenciais.
 
-O sistema foi concebido inicialmente como um **MVP operacional**, com foco em confiabilidade, execução offline e simplicidade de utilização durante avaliações presenciais.
+O sistema permite ao professor preparar e iniciar uma prova, autenticar-se, configurar a avaliação e acompanhar o processo, enquanto os alunos realizam a prova individualmente através de uma interface controlada por tempo.
 
----
-
-## ✨ Visão geral
-
-Em vez de depender de uma plataforma web, servidor ou conexão permanente à Internet, o XavMira Exam funciona localmente na máquina onde a prova é realizada.
-
-O fluxo básico é:
-
-```text
-Professor
-   │
-   ├── Importa a prova (.json)
-   │
-   ├── Configura o tempo
-   │
-   └── Inicia a sessão
-             │
-             ▼
-        Identificação
-          do aluno
-             │
-             ▼
-       Execução da prova
-             │
-             ├── Questão 1
-             ├── Questão 2
-             ├── Questão 3
-             └── ...
-             │
-             ▼
-       Finalização da prova
-```
-
-A arquitetura foi pensada para que a aplicação possa evoluir posteriormente para um sistema institucional completo, sem abandonar o princípio de funcionamento **offline-first**.
+Todo o processo foi desenvolvido com uma abordagem **offline-first**, permitindo que as avaliações sejam realizadas sem depender de uma conexão permanente à Internet.
 
 ---
 
-# 🚀 Estado do projeto
+## 📌 Estado do projeto
 
 **Versão:** `V0.1`
 
-**Estado:** 🟢 MVP operacional
+**Estado:** 🟢 **100% concluído e operacional**
 
-| Componente                  | Estado      |
-| --------------------------- | ----------- |
-| Fundação do projeto         | ✅ Concluído |
-| Leitura de provas JSON      | ✅ Concluído |
-| Validação de provas         | ✅ Concluído |
-| Identificação de alunos     | ✅ Concluído |
-| Execução da prova           | ✅ Concluído |
-| Cronómetro                  | ✅ Concluído |
-| Controle de tempo           | ✅ Concluído |
-| Máquina de estados da prova | ✅ Concluído |
-| Correção automática         | 🚧 Fase 3   |
-| Resultados                  | 🚧 Fase 4   |
-| Relatórios PDF              | 🚧 Fase 4   |
-| Persistência SQLite         | 🚧 Fase 3   |
-| Testes end-to-end           | 🚧 Fase 5   |
+O MVP encontra-se funcional e preparado para utilização no ambiente real do Centro de Formação XavMira.
 
 ---
 
-# 🧰 Stack tecnológica
+# ✨ Principais funcionalidades
 
-O projeto utiliza tecnologias modernas do ecossistema .NET:
+### 👨‍🏫 Autenticação do professor
 
-* **.NET 10**
-* **C#**
-* **Avalonia UI 11**
-* **MVVM**
-* **CommunityToolkit.Mvvm**
-* **System.Text.Json**
-* **SQLite** — planejado para as fases seguintes
+O sistema possui uma área destinada ao professor, protegida por autenticação.
 
-### Arquitetura
+O professor pode aceder às funcionalidades administrativas da aplicação antes de preparar e iniciar uma avaliação.
 
-O projeto segue uma separação por responsabilidades:
+### 📝 Gestão e importação de provas
+
+As provas podem ser preparadas através de ficheiros JSON e importadas para o sistema.
+
+Antes de uma sessão ser iniciada, a prova é validada para garantir que possui uma estrutura compatível com o sistema.
+
+### 👨‍🎓 Identificação dos alunos
+
+Os alunos são identificados através do sistema de alunos configurado para a instituição.
+
+A identificação ocorre antes do início da sessão individual de prova.
+
+### ⏱️ Controle de tempo
+
+O professor pode configurar o tempo destinado à prova.
+
+Durante a realização, o aluno possui um cronómetro visível.
+
+Quando o tempo da questão termina, o sistema encerra automaticamente a questão de acordo com as regras definidas para a avaliação.
+
+### 📋 Execução controlada da prova
+
+A prova é apresentada uma questão de cada vez.
+
+O sistema controla o estado da sessão e impede comportamentos que possam comprometer a integridade da avaliação.
+
+Entre as regras implementadas:
+
+* uma resposta por questão;
+* avanço controlado entre questões;
+* impossibilidade de voltar a questões anteriores;
+* controle individual do tempo;
+* encerramento automático de questões;
+* encerramento automático da sessão;
+* proteção do estado da prova durante a execução.
+
+### 🧮 Correção automática
+
+Após a realização da prova, o sistema processa as respostas e determina:
+
+* respostas corretas;
+* respostas incorretas;
+* questões não respondidas;
+* total de questões;
+* percentagem;
+* nota final.
+
+### 📊 Resultados
+
+Após a conclusão, o resultado da avaliação pode ser apresentado ao utilizador autorizado.
+
+O sistema mantém as informações necessárias para consulta e geração dos resultados.
+
+### 📄 Relatórios PDF
+
+O XavMira Exam System possui geração de relatórios em **PDF**, permitindo transformar os resultados das avaliações em documentos utilizáveis pela instituição.
+
+### 💾 Funcionamento offline
+
+Uma das características fundamentais do projeto é a capacidade de funcionamento sem dependência de Internet durante a realização das provas.
+
+A aplicação pode ser instalada diretamente nos computadores utilizados no centro de formação.
+
+---
+
+# 🏗️ Arquitetura
+
+O projeto foi estruturado utilizando separação de responsabilidades entre domínio, infraestrutura e interface.
 
 ```text
-┌─────────────────────────────────────┐
-│       XavMiraExam.Desktop           │
-│       Avalonia + MVVM               │
-└─────────────────┬───────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────┐
-│          XavMiraExam.Core            │
-│ Models · Services · Interfaces       │
-└─────────────────┬───────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────┐
-│      XavMiraExam.Infrastructure      │
-│ JSON · Persistência · Implementações │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│          XavMiraExam.Desktop             │
+│       Avalonia UI + MVVM + Views         │
+└────────────────────┬────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────┐
+│             XavMiraExam.Core             │
+│ Models · Services · Interfaces           │
+│ Regras de negócio · Sessão de exame      │
+└────────────────────┬────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────┐
+│       XavMiraExam.Infrastructure         │
+│ JSON · Persistência · Implementações     │
+│ Dados · Resultados · Relatórios          │
+└─────────────────────────────────────────┘
 ```
 
-Essa separação permite que a lógica principal do sistema permaneça independente da interface gráfica.
+A camada de domínio contém as regras fundamentais do sistema, enquanto a infraestrutura fornece as implementações concretas e a aplicação Desktop é responsável pela experiência de utilização.
+
+---
+
+# 🧰 Tecnologias
+
+| Tecnologia                | Utilização                         |
+| ------------------------- | ---------------------------------- |
+| **C#**                    | Linguagem principal                |
+| **.NET 10**               | Plataforma de desenvolvimento      |
+| **Avalonia UI 11**        | Interface gráfica                  |
+| **MVVM**                  | Arquitetura da interface           |
+| **CommunityToolkit.Mvvm** | Implementação MVVM                 |
+| **System.Text.Json**      | Manipulação de JSON                |
+| **SQLite**                | Persistência local                 |
+| **PDF**                   | Geração de relatórios              |
+| **Inno Setup**            | Distribuição do instalador Windows |
 
 ---
 
@@ -117,7 +149,9 @@ XavMiraExam/
 │   └── Interfaces/
 │
 ├── XavMiraExam.Infrastructure/
-│   └── Json/
+│   ├── Json/
+│   ├── Database/
+│   └── Reports/
 │
 ├── XavMiraExam.Desktop/
 │   ├── Views/
@@ -129,80 +163,85 @@ XavMiraExam/
 ├── XavMiraExam.Fase2Console/
 │
 ├── Exams/
-│   ├── Informatica.json
-│   └── ProvaInvalida.json
-│
 ├── Students/
-│   └── students.json
-│
 ├── Results/
 ├── Data/
 │
+├── installer/
+│   └── script_setup.iss
+│
 ├── XavMiraExam.slnx
+├── .gitignore
 └── README.md
 ```
 
-### Principais projetos
-
-#### `XavMiraExam.Core`
-
-Contém o núcleo da aplicação:
-
-* modelos de domínio;
-* regras da sessão;
-* interfaces;
-* serviços de negócio.
-
-Não depende da interface gráfica.
-
-#### `XavMiraExam.Infrastructure`
-
-Contém implementações concretas das interfaces do Core.
-
-Atualmente:
-
-* leitura de provas JSON;
-* validação;
-* leitura de alunos.
-
-Nas próximas fases:
-
-* SQLite;
-* persistência de resultados;
-* relatórios.
-
-#### `XavMiraExam.Desktop`
-
-Interface gráfica construída com **Avalonia UI 11**, seguindo o padrão MVVM.
-
-É responsável por:
-
-* navegação;
-* interação com o professor;
-* identificação do aluno;
-* apresentação das questões;
-* cronómetro;
-* execução visual da sessão.
-
-#### `XavMiraExam.Fase1Console`
-
-Projeto de verificação da fundação e leitura de provas.
-
-Não faz parte do produto final.
-
-#### `XavMiraExam.Fase2Console`
-
-Projeto de verificação da máquina de estados da sessão de prova.
-
-Também não faz parte do produto final.
+Os projetos de consola foram utilizados como ferramentas de validação durante o desenvolvimento do sistema.
 
 ---
 
-# 📝 Formato das provas
+# 🔄 Fluxo da aplicação
 
-As provas são definidas através de ficheiros JSON.
+O fluxo principal da aplicação pode ser representado da seguinte forma:
 
-Exemplo simplificado:
+```text
+                    ┌──────────────┐
+                    │    Início    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                 ┌──────────────────┐
+                 │ Autenticação      │
+                 │ do Professor      │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Preparar /       │
+                 │ importar prova   │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Configurar       │
+                 │ avaliação/tempo  │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Identificação    │
+                 │ do aluno         │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Realização da    │
+                 │ prova            │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Correção         │
+                 │ automática       │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Resultado        │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Relatório PDF    │
+                 └──────────────────┘
+```
+
+---
+
+# 📝 Modelo de prova
+
+As provas são representadas através de JSON.
+
+Um exemplo simplificado:
 
 ```json
 {
@@ -222,184 +261,116 @@ Exemplo simplificado:
 }
 ```
 
-A utilização de JSON nesta fase permite preparar e transportar provas facilmente sem depender de uma base de dados ou servidor.
+O sistema valida o conteúdo antes de permitir que a prova seja utilizada.
+
+Essa abordagem permite preparar diferentes avaliações sem necessidade de alterar o código-fonte da aplicação.
 
 ---
 
-# 👨‍🏫 Fluxo do professor
+# 👨‍🏫 Modo Professor
 
-O professor inicia a aplicação e seleciona:
+O professor possui acesso a funcionalidades administrativas através de autenticação.
+
+O fluxo principal é:
 
 ```text
-Modo Professor
-      │
-      ▼
-Importar prova
-      │
-      ▼
-Validação
-      │
-      ▼
-Configuração do tempo
-      │
-      ▼
-Iniciar sessão
+Login
+  │
+  ▼
+Área do Professor
+  │
+  ├── Preparar prova
+  ├── Importar prova
+  ├── Validar prova
+  ├── Configurar tempo
+  └── Iniciar sessão
 ```
 
-O sistema valida o ficheiro antes de permitir a execução da prova.
-
-Isso evita iniciar uma avaliação utilizando uma prova estruturalmente inválida.
+O professor controla o início da avaliação, enquanto o sistema assume o controle da execução após o início da sessão.
 
 ---
 
-# 👨‍🎓 Fluxo do aluno
+# 👨‍🎓 Modo Aluno
 
-Depois de a sessão ser iniciada:
+O aluno não possui acesso às funcionalidades administrativas.
+
+Após a identificação, a aplicação apresenta a avaliação:
 
 ```text
 Identificação
-     │
-     ▼
-Validação do código
-     │
-     ▼
+      │
+      ▼
+Início da prova
+      │
+      ▼
 Questão atual
-     │
-     ▼
+      │
+      ▼
 Resposta
-     │
-     ▼
+      │
+      ▼
 Próxima questão
-     │
-     ▼
+      │
+      ▼
 ...
-     │
-     ▼
+      │
+      ▼
 Conclusão
 ```
 
-O aluno responde a uma questão de cada vez.
-
-A sessão não permite retornar às questões anteriores.
+A interface foi projetada para manter o foco do aluno exclusivamente na avaliação.
 
 ---
 
-# ⏱️ Controle de tempo
+# ⏱️ Controle e integridade da sessão
 
-Cada questão possui um limite de tempo configurado pelo professor.
+A execução da prova é controlada pelo serviço de sessão do domínio.
 
-Quando o tempo termina:
+O `ExamSessionService` mantém o estado da avaliação e aplica as regras definidas para a sessão.
 
-```text
-Tempo esgotado
-      │
-      ▼
-Questão encerrada
-      │
-      ▼
-Sem resposta
-      │
-      ▼
-Próxima questão
-```
+Isso evita colocar regras críticas exclusivamente na interface gráfica.
 
-O controle de tempo é realizado pelo `ExamSessionService`, e não apenas pela interface gráfica.
+Entre as regras implementadas estão:
 
-Isso é importante porque as regras da prova permanecem centralizadas na camada de domínio.
+* controle do estado da sessão;
+* controle da questão atual;
+* controle de respostas;
+* limite de tempo;
+* avanço automático;
+* encerramento de questões;
+* encerramento da prova;
+* prevenção de alterações após a conclusão.
 
 ---
 
-# 🔒 Regras da sessão
+# 🧪 Testes e validação
 
-A sessão de exame implementa regras explícitas:
+Durante o desenvolvimento foram criadas aplicações de consola para validar componentes importantes independentemente da interface gráfica.
 
-* uma resposta por questão;
-* não é possível retornar a questões anteriores;
-* uma questão encerrada não pode ser respondida novamente;
-* o tempo de cada questão é limitado;
-* o término do tempo encerra automaticamente a questão;
-* a última questão encerra automaticamente a sessão;
-* uma sessão concluída não pode continuar.
-
-Essas regras são implementadas no domínio através do:
-
-```text
-ExamSessionService
-```
-
----
-
-# 🧪 Verificação
-
-O projeto possui aplicações de consola destinadas a validar o comportamento do sistema sem depender da interface gráfica.
-
-## Fase 1
-
-Valida:
+Foram realizados testes envolvendo:
 
 * carregamento de provas;
-* leitura de JSON;
-* rejeição de provas inválidas.
-
-## Fase 2
-
-Valida:
-
-* identificação do aluno;
-* resposta rápida;
-* expiração real do tempo;
+* validação de JSON;
+* identificação de alunos;
+* respostas;
+* expiração do tempo;
 * avanço automático;
 * conclusão da sessão;
-* estado final da prova.
+* processamento dos resultados.
 
-Exemplo de execução validada:
-
-```text
-Resumo da sessão:
-
-Aluno: Maria Silva (A002)
-Prova: Avaliação de Informática
-
-Respondidas: 4
-Não respondidas: 1
-Corretas: 4
-```
+Além dos testes de componentes, o sistema foi executado através da interface gráfica e empacotado em um instalador Windows para validação no ambiente real.
 
 ---
 
-# 💻 Requisitos
+# 📦 Build e publicação
 
-Para desenvolvimento:
-
-* .NET 10 SDK
-* Sistema operacional compatível com .NET e Avalonia
-* acesso à Internet para restauração dos pacotes NuGet
-
-Para execução do produto publicado:
-
-* Windows x64
-* não é necessário instalar o .NET Runtime quando utilizada a publicação self-contained.
-
-> O instalador distribuído para o ambiente de provas é gerado separadamente através do Inno Setup.
-
----
-
-# 🛠️ Executar localmente
-
-Clone o repositório:
-
-```bash
-git clone <URL_DO_REPOSITORIO>
-cd XavMiraExam
-```
-
-Restaure as dependências:
+Para desenvolvimento, restaure as dependências:
 
 ```bash
 dotnet restore
 ```
 
-Compile:
+Compile a solução:
 
 ```bash
 dotnet build
@@ -411,25 +382,7 @@ Execute a aplicação:
 dotnet run --project XavMiraExam.Desktop
 ```
 
-### Executar as verificações
-
-```bash
-dotnet run --project XavMiraExam.Fase1Console
-```
-
-```bash
-dotnet run --project XavMiraExam.Fase2Console
-```
-
----
-
-# 📦 Publicação
-
-O repositório contém o código-fonte e os ficheiros necessários para construir o sistema.
-
-Os artefactos gerados pelo processo de build não são versionados no Git.
-
-Exemplo:
+Para criar uma publicação Windows:
 
 ```bash
 dotnet publish \
@@ -438,105 +391,85 @@ dotnet publish \
   --self-contained true
 ```
 
-O diretório `publish/` é ignorado pelo Git.
+O instalador do sistema é posteriormente gerado utilizando o **Inno Setup**.
 
-Da mesma forma, o instalador gerado pelo Inno Setup não faz parte do código-fonte versionado.
-
----
-
-# 🏗️ Roadmap
-
-## Fase 3 — Correção
-
-* [ ] Avaliação automática das respostas
-* [ ] Contagem de acertos
-* [ ] Contagem de erros
-* [ ] Contagem de questões não respondidas
-* [ ] Cálculo da percentagem
-* [ ] Cálculo da nota final
-
-## Fase 4 — Resultados
-
-* [ ] Ecrã de resultado
-* [ ] Persistência dos resultados
-* [ ] SQLite
-* [ ] Histórico de provas
-* [ ] Geração de relatórios PDF
-* [ ] Consulta dos resultados
-
-## Fase 5 — Validação
-
-* [ ] Testes end-to-end
-* [ ] Testes com várias provas
-* [ ] Testes com múltiplos alunos
-* [ ] Testes de expiração de tempo
-* [ ] Testes de recuperação de erros
-* [ ] Teste completo no ambiente real do Centro de Formação XavMira
+Os artefactos de build e publicação não fazem parte do repositório Git.
 
 ---
 
-# 🔮 Evolução futura
+# 🖥️ Distribuição
 
-O MVP foi desenvolvido com uma arquitetura que permite evoluir o sistema além da utilização local.
-
-Possíveis versões futuras:
+O sistema é distribuído através de um instalador Windows:
 
 ```text
-V0.1
-Offline Desktop
-     │
-     ▼
-V0.2
-Correção + Resultados
-     │
-     ▼
-V0.3
-Gestão de alunos + provas
-     │
-     ▼
-V1.0
-Sistema institucional
-     │
-     ▼
-Futuro
-Desktop + API + sincronização
+XavMiraSetup.exe
 ```
 
-Possíveis funcionalidades futuras:
+O instalador inclui os componentes necessários para executar a aplicação publicada.
 
-* banco centralizado de questões;
-* gestão de turmas;
-* gestão de professores;
-* múltiplos tipos de prova;
-* estatísticas;
-* relatórios administrativos;
-* exportação de resultados;
-* sincronização entre computadores;
-* API institucional;
-* painel administrativo;
-* gestão centralizada das avaliações.
+A publicação utilizada para o ambiente de produção é **self-contained**, reduzindo a necessidade de configurar manualmente o runtime .NET nas máquinas destinadas à realização das provas.
 
 ---
 
-# 🎯 Objetivo do projeto
+# 🔐 Segurança e operação
 
-O objetivo inicial não é criar uma plataforma de e-learning completa.
+O sistema foi desenvolvido considerando o contexto de utilização presencial.
 
-O objetivo é muito mais direto:
+Entre as medidas implementadas encontram-se:
 
-> **Permitir que uma instituição de ensino realize provas informatizadas de forma simples, controlada e confiável, mesmo sem depender da Internet.**
+* autenticação do professor;
+* separação entre área administrativa e área do aluno;
+* validação das provas;
+* controle do fluxo da sessão;
+* restrição de navegação durante a avaliação;
+* controle de tempo;
+* persistência local dos dados;
+* funcionamento offline.
 
-A arquitetura foi construída para resolver primeiro o problema real do ambiente de utilização e, posteriormente, permitir a evolução do sistema.
+A aplicação não depende de um servidor remoto para executar uma avaliação.
 
 ---
 
-# 🏫 Contexto
+# 🎯 Objetivo
 
-O XavMira Exam foi desenvolvido para utilização no:
+O XavMira Exam System foi criado para resolver um problema concreto:
+
+> **Disponibilizar uma plataforma simples e confiável para realização de provas informatizadas em ambientes de formação onde a Internet não deve ser um requisito obrigatório.**
+
+O sistema privilegia:
+
+**Confiabilidade · Simplicidade · Offline-first · Controle · Automatização**
+
+---
+
+# 🏫 Contexto institucional
+
+O sistema foi desenvolvido para utilização no:
 
 **Centro de Formação XavMira**
 
-O projeto nasceu como uma solução prática para informatizar avaliações presenciais e reduzir a dependência de processos manuais durante a realização e gestão das provas.
+A primeira versão foi desenvolvida com foco na utilização prática em avaliações presenciais, permitindo validar a solução diretamente no ambiente para o qual foi concebida.
+
+---
+
+# 🚀 Próximas evoluções
+
+A versão atual está concluída como MVP.
+
+O desenvolvimento futuro poderá expandir o sistema para funcionalidades institucionais, tais como:
+
+* gestão centralizada de provas;
+* gestão de turmas;
+* gestão de professores;
+* banco de questões;
+* estatísticas avançadas;
+* sincronização entre computadores;
+* API institucional;
+* painel administrativo;
+* gestão centralizada de resultados;
+* distribuição automática de avaliações.
+
+Essas funcionalidades pertencem a uma possível evolução do produto e **não são requisitos da versão atual**.
 
 ---
 
@@ -544,23 +477,28 @@ O projeto nasceu como uma solução prática para informatizar avaliações pres
 
 Este projeto é propriedade dos seus respetivos autores e/ou da organização responsável pelo desenvolvimento.
 
-A utilização, redistribuição ou modificação do código deve respeitar os termos definidos pelo proprietário do projeto.
+A utilização, distribuição ou modificação do código deve respeitar os termos definidos pelo proprietário do projeto.
 
-> **Licença definitiva: a definir.**
+> **Licença: a definir.**
 
 ---
 
 # 👨‍💻 Desenvolvimento
 
-Desenvolvido com:
+Desenvolvido por **Jeth Weber**.
 
-**C# · .NET · Avalonia UI · MVVM · JSON**
+Tecnologias principais:
 
-por **Jeth Weber**.
+```text
+C# · .NET 10 · Avalonia UI 11 · MVVM · SQLite · JSON
+```
 
 ---
 
 <p align="center">
-  <strong>XavMira Exam System</strong><br>
-  Offline-first examination software for education.
+
+**XavMira Exam System**
+
+*Offline-first examination software for education.*
+
 </p>
